@@ -1,0 +1,4 @@
+[
+  { "id": 1, "name": "Warrior", "class": "Tank", "weight": 75 },
+  { "id": 2, "name": "Mage", "class": "Caster", "weight": 55 }
+]
