@@ -68,7 +68,7 @@ h1 {
 
 #clear-search {
     position: absolute;
-    right: 5px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
@@ -84,7 +84,7 @@ h1 {
 }
 
 #alphabet-filter button {
-    margin-top: 6px; /* adjust 4–10px to taste */
+    margin-top: 10px; /* adjust 4–10px to taste */
     margin: 2px;
     padding: 6px 8px;
     border: none;

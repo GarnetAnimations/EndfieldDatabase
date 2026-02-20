@@ -3,7 +3,6 @@
 // =============================================
 
 let operatorData = [];      // Stores JSON data
-let currentLetter = null;   // Currently selected letter filter
 
 
 // =============================================
@@ -74,12 +73,7 @@ function renderOperators() {
         .toLowerCase();
 
     operatorData.forEach(group => {
-
-        // Skip group if letter filter is active and doesn't match
-        if (currentLetter && group.letter_group !== currentLetter) {
-            return;
-        }
-
+        
         const filteredOperators = group.operators.filter(operator =>
             operator.name.toLowerCase().includes(searchValue)
         );
