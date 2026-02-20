@@ -163,30 +163,35 @@ function setupSearchListener() {
 }
 
 // =============================================
-// Back To Top Logic
+// Initialize App After DOM Loads
 // =============================================
 
-const backToTopButton = document.getElementById('back-to-top');
+document.addEventListener("DOMContentLoaded", () => {
 
-// Show button after scrolling down 300px
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        backToTopButton.style.display = 'block';
-    } else {
-        backToTopButton.style.display = 'none';
+    // Back To Top Button Setup
+    const backToTopButton = document.getElementById('back-to-top');
+
+    if (backToTopButton) {
+
+        // Show button after scrolling 300px
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        });
+
+        // Scroll to top when clicked
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     }
+
+    // Load operator data after DOM exists
+    loadOperators();
+
 });
-
-// Scroll to top when clicked
-backToTopButton.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-
-// =============================================
-// Initialize App
-// =============================================
-
-loadOperators();
