@@ -1,4 +1,224 @@
 [
-  { "id": 1, "name": "Warrior", "class": "Tank", "weight": 75 },
-  { "id": 2, "name": "Mage", "class": "Caster", "weight": 55 }
+    {
+        "letter_group": "A",
+        "operators": [
+            {
+                "name": "Akekuri",
+                "stats": [
+                    "– Agility",
+                    "- Intellect"
+                ]
+            },
+            {
+                "name": "Ardelia",
+                "stats": [
+                    "– Intellect",
+                    "- Will"
+                ]
+            },
+            {
+                "name": "Avywenna",
+                "stats": [
+                    "– Will",
+                    "– Will",
+                    "- Agility"
+                ]
+            },
+            {
+                "name": "Alesh",
+                "stats": [
+                    "– Strength",
+                    "- Intellect"
+                ]
+            },
+            {
+                "name": "Arclight",
+                "stats": [
+                    "– Agility",
+                    "- Intellect"
+                ]
+            },
+            {
+                "name": "Antal",
+                "stats": [
+                    "– Intellect",
+                    "- Strength"
+                ]
+            }
+        ]
+    },
+    {
+        "letter_group": "C",
+        "operators": [
+            {
+                "name": "Chen Qianyu",
+                "stats": [
+                    "– Agility",
+                    "- Strength"
+                ]
+            },
+            {
+                "name": "Catcher",
+                "stats": [
+                    "– Strength",
+                    "- Will"
+                ]
+            }
+        ]
+    },
+    {
+        "letter_group": "D",
+        "operators": [
+            {
+                "name": "Da Pan",
+                "stats": [
+                    "– Strength",
+                    "- Will"
+                ]
+            }
+        ]
+    },
+    {
+        "letter_group": "E",
+        "operators": [
+            {
+                "name": "Ember",
+                "stats": [
+                    "– Strength",
+                    "- Will"
+                ]
+            },
+            {
+                "name": "Estella",
+                "stats": [
+                    "– Will",
+                    "- Strength"
+                ]
+            },
+            {
+                "name": "Endministrator",
+                "stats": [
+                    "– Agility",
+                    "- Strength"
+                ]
+            }
+        ]
+    },
+    {
+        "letter_group": "F",
+        "operators": [
+            {
+                "name": "Flourite",
+                "stats": [
+                    "– Agility",
+                    "- Intellect"
+                ]
+            }
+        ]
+    },
+    {
+        "letter_group": "G",
+        "operators": [
+            {
+                "name": "Gilberta",
+                "stats": [
+                    "– Will",
+                    "- Intellect"
+                ]
+            }
+        ]
+    },
+    {
+        "letter_group": "L",
+        "operators": [
+            {
+                "name": "Laevatain",
+                "stats": [
+                    "– Intellect",
+                    "- Strength"
+                ]
+            },
+            {
+                "name": "Last Rite",
+                "stats": [
+                    "– Strength",
+                    "- Will"
+                ]
+            },
+            {
+                "name": "Lifeng",
+                "stats": [
+                    "– Agility",
+                    "- Strength"
+                ]
+            }
+        ]
+    },
+    {
+        "letter_group": "P",
+        "operators": [
+            {
+                "name": "Perlica",
+                "stats": [
+                    "– Intellect",
+                    "- Will"
+                ]
+            },
+            {
+                "name": "Pogranichnik",
+                "stats": [
+                    "– Will",
+                    "- Agility"
+                ]
+            }
+        ]
+    },
+    {
+        "letter_group": "S",
+        "operators": [
+            {
+                "name": "Snowshine",
+                "stats": [
+                    "– Strength",
+                    "- Will"
+                ]
+            }
+        ]
+    },
+    {
+        "letter_group": "W",
+        "operators": [
+            {
+                "name": "Wulfgard",
+                "stats": [
+                    "– Strength",
+                    "- Agility"
+                ]
+            }
+        ]
+    },
+    {
+        "letter_group": "X",
+        "operators": [
+            {
+                "name": "Xaihi",
+                "stats": [
+                    "– Will",
+                    "- Intellect"
+                ]
+            }
+        ]
+    },
+    {
+        "letter_group": "Y",
+        "operators": [
+            {
+                "name": "Yvonne",
+                "stats": [
+                    "– Intellect",
+                    "- Agility"
+                ]
+            }
+        ]
+    }
 ]
