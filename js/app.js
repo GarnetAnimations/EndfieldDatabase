@@ -19,7 +19,7 @@ async function loadOperators() {
         // -----------------------------------------
         // 2. Grab the container in index.html
         // -----------------------------------------
-        const container = document.getElementById('character-list');
+        const container = document.getElementById('operator-list');
 
         // Clear anything currently inside it
         container.innerHTML = '';
