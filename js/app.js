@@ -44,21 +44,14 @@ function renderAlphabetButtons() {
 
         button.addEventListener('click', () => {
 
-            // Toggle behavior
-            if (currentLetter === letter) {
-                currentLetter = null;
-                button.classList.remove('active');
-            } else {
-                currentLetter = letter;
+            const section = document.getElementById(`letter-${letter}`);
 
-                // Remove active from all buttons
-                document.querySelectorAll('#alphabet-filter button')
-                    .forEach(btn => btn.classList.remove('active'));
-
-                button.classList.add('active');
+            if (section) {
+                section.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             }
-
-            renderOperators();
         });
 
         alphabetContainer.appendChild(button);
@@ -98,6 +91,7 @@ function renderOperators() {
 
         const letterSection = document.createElement('div');
         letterSection.className = 'letter-section';
+        letterSection.id = `letter-${group.letter_group}`;
 
         const letterHeading = document.createElement('h2');
         letterHeading.textContent = group.letter_group;
@@ -145,11 +139,51 @@ function setupSearchListener() {
 
     const searchInput = document.getElementById('search-input');
 
+    const clearButton = document.getElementById('clear-search');
+
+    // Show/hide X button based on input
     searchInput.addEventListener('input', () => {
+
+        if (searchInput.value.length > 0) {
+            clearButton.style.display = 'block';
+        } else {
+            clearButton.style.display = 'none';
+        }
+
         renderOperators();
     });
+
+    // Clear button click behavior
+    clearButton.addEventListener('click', () => {
+        searchInput.value = '';
+        clearButton.style.display = 'none';
+        searchInput.focus();
+        renderOperators();
+    });    
 }
 
+// =============================================
+// Back To Top Logic
+// =============================================
+
+const backToTopButton = document.getElementById('back-to-top');
+
+// Show button after scrolling down 300px
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTopButton.style.display = 'block';
+    } else {
+        backToTopButton.style.display = 'none';
+    }
+});
+
+// Scroll to top when clicked
+backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
 
 // =============================================
 // Initialize App
