@@ -73,7 +73,7 @@ function renderOperators() {
         .toLowerCase();
 
     operatorData.forEach(group => {
-        
+
         const filteredOperators = group.operators.filter(operator =>
             operator.name.toLowerCase().includes(searchValue)
         );
@@ -94,7 +94,7 @@ function renderOperators() {
         filteredOperators.forEach(operator => {
 
             const operatorCard = document.createElement('div');
-            operatorCard.className = 'operator-card';
+            operatorCard.className = 'operator-card fade-in';
 
             const name = document.createElement('h3');
             name.textContent = operator.name;
@@ -185,7 +185,27 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Load operator data after DOM exists
+    // =============================================
+    // Load Version From Config
+    // =============================================
+
+    async function loadVersion() {
+        try {
+            const response = await fetch('data/config.json');
+            const config = await response.json();
+
+            const versionElement = document.querySelector('.version');
+            if (versionElement && config.version) {
+                versionElement.textContent = `v${config.version}`;
+            }
+
+        } catch (error) {
+            console.error("Error loading config:", error);
+        }
+    }
+
+    // Load any data after DOM exists
+    loadVersion();
     loadOperators();
 
 });
