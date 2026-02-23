@@ -28,27 +28,33 @@ async function loadOperators() {
 // Tab Switching
 // =============================================
 
-const tabButtons = document.querySelectorAll('.tab-button');
-const mainTab = document.getElementById('main-tab');
-const teamsTab = document.getElementById('teams-tab');
+document.addEventListener("DOMContentLoaded", () => {
 
-tabButtons.forEach(button => {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const mainTab = document.getElementById('main-tab');
+    const teamsTab = document.getElementById('teams-tab');
 
-    button.addEventListener('click', () => {
+    tabButtons.forEach(button => {
 
-        // Remove active state
-        tabButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
+        button.addEventListener('click', () => {
 
-        const selectedTab = button.dataset.tab;
+            // Remove active state
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
 
-        if (selectedTab === "main") {
-            mainTab.classList.remove('hidden');
-            teamsTab.classList.add('hidden');
-        } else {
-            mainTab.classList.add('hidden');
-            teamsTab.classList.remove('hidden');
-        }
+            const selectedTab = button.dataset.tab;
+
+            if (selectedTab === "main") {
+                mainTab.classList.remove('hidden');
+                teamsTab.classList.add('hidden');
+            } else {
+                mainTab.classList.add('hidden');
+                teamsTab.classList.remove('hidden');
+
+                renderTeams();
+            }
+
+        });
 
     });
 
@@ -382,6 +388,5 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load any data after DOM exists
     loadVersion();
     loadOperators();
-    renderTeams();
 
 });
