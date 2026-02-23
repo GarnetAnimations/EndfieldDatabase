@@ -164,7 +164,7 @@ function renderOperators() {
 // =============================================
 
 function renderTeams() {
-    console.log("Rendering teams...");
+    console.log(document.getElementById('teams-tab'));
 
     const container = document.getElementById('teams-container');
     container.innerHTML = '';
