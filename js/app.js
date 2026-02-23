@@ -3,7 +3,6 @@
 // =============================================
 
 let operatorData = [];      // Stores JSON data
-let activeTeamSlot = null; // Tracks which slot we're editing
 
 // =============================================
 // Load JSON Data
@@ -23,7 +22,6 @@ async function loadOperators() {
         console.error("Error loading operator data:", error);
     }
 }
-
 // =============================================
 // Tab Switching
 // =============================================
@@ -52,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 teamsTab.classList.remove('hidden');
 
                 renderTeams();
+                attachEquipmentListeners();
             }
 
         });
@@ -160,40 +159,94 @@ function renderOperators() {
 }
 
 // =============================================
+// Currently Selected Slot
+// =============================================
+
+let currentTeamIndex = null;
+let currentSlotIndex = null;
+
+// =============================================
+// Team State
+// =============================================
+
+const TEAM_COUNT = 5;
+const SLOT_COUNT = 4;
+
+// 5 teams, each with 4 slots
+let teams = Array.from({ length: TEAM_COUNT }, () =>
+    Array.from({ length: SLOT_COUNT }, () => ({
+        operator: null,
+        equipment: {
+            armor: "",
+            gloves: "",
+            kit1: "",
+            kit2: ""
+        }
+    }))
+);
+// =============================================
 // Render Teams
 // =============================================
 
 function renderTeams() {
-    console.log(document.getElementById('teams-tab'));
 
     const container = document.getElementById('teams-container');
     container.innerHTML = '';
 
-    for (let i = 1; i <= 5; i++) {
+    for (let teamIndex = 0; teamIndex < TEAM_COUNT; teamIndex++) {
 
         const teamSection = document.createElement('div');
         teamSection.className = 'team-section';
 
         const title = document.createElement('h2');
-        title.textContent = `Team ${String(i).padStart(2, '0')}`;
+        title.textContent = `Team ${String(teamIndex + 1).padStart(2, '0')}`;
 
         teamSection.appendChild(title);
 
         const slotContainer = document.createElement('div');
         slotContainer.className = 'team-slots';
 
-        for (let s = 1; s <= 4; s++) {
+        for (let slotIndex = 0; slotIndex < SLOT_COUNT; slotIndex++) {
+
+            const slotData = teams[teamIndex][slotIndex];
 
             const slot = document.createElement('div');
             slot.className = 'team-slot';
 
-            slot.innerHTML = `
-                <div>Empty Slot</div>
-                <button class="add-operator-btn">Add Operator</button>
-            `;
+            if (!slotData.operator) {
 
-            const button = slot.querySelector('button');
-            button.addEventListener('click', () => openModal(slot));
+                slot.innerHTML = `
+                    <div>Empty Slot</div>
+                    <button class="add-operator-btn">Add Operator</button>
+                `;
+
+                slot.querySelector('button')
+                    .addEventListener('click', () => {
+                        openModal(teamIndex, slotIndex);
+                    });
+
+            } else {
+
+                slot.innerHTML = `
+                    <div class="operator-name">${slotData.operator.name}</div>
+                    <div class="operator-info">
+                        Primary: ${slotData.operator.primary}
+                        <br>
+                        Secondary: ${slotData.operator.secondary}
+                    </div>
+
+                    <div class="equipment-section">
+                        ${renderEquipmentFields(teamIndex, slotIndex)}
+                    </div>
+
+                    <button class="change-operator-btn">Change Operator</button>
+                `;
+
+                slot.querySelector('.change-operator-btn')
+                    .addEventListener('click', () => {
+                        openModal(teamIndex, slotIndex);
+                    });
+            }
 
             slotContainer.appendChild(slot);
         }
@@ -203,6 +256,66 @@ function renderTeams() {
     }
 }
 
+// =============================================
+// Create Equipment Fields
+// =============================================
+
+function createEquipmentField(label, key, value, teamIndex, slotIndex) {
+
+    return `
+        <div class="equipment-item">
+            <label>${label}</label>
+            <input 
+                type="text"
+                value="${value}"
+                data-team="${teamIndex}"
+                data-slot="${slotIndex}"
+                data-key="${key}"
+                class="equipment-input"
+            />
+        </div>
+    `;
+}
+
+// =============================================
+// Render Equipment Inputs
+// =============================================
+
+function renderEquipmentFields(teamIndex, slotIndex) {
+
+    const equip = teams[teamIndex][slotIndex].equipment;
+
+    return `
+        ${createEquipmentField("Armor", "armor", equip.armor, teamIndex, slotIndex)}
+        ${createEquipmentField("Gloves", "gloves", equip.gloves, teamIndex, slotIndex)}
+        ${createEquipmentField("Kit 1", "kit1", equip.kit1, teamIndex, slotIndex)}
+        ${createEquipmentField("Kit 2", "kit2", equip.kit2, teamIndex, slotIndex)}
+    `;
+}
+
+// =============================================
+// Equipment Input Handlers
+// =============================================
+
+function attachEquipmentListeners() {
+
+    const inputs = document.querySelectorAll('.equipment-input');
+
+    inputs.forEach(input => {
+
+        input.addEventListener('input', (e) => {
+
+            const teamIndex = e.target.dataset.team;
+            const slotIndex = e.target.dataset.slot;
+            const key = e.target.dataset.key;
+
+            teams[teamIndex][slotIndex].equipment[key] = e.target.value;
+
+            saveTeams();
+        });
+
+    });
+}
 
 // =============================================
 // Search Listener (Live Filtering)
@@ -239,20 +352,18 @@ function setupSearchListener() {
 // Open Modal
 // =============================================
 
-function openModal(slotElement) {
+function openModal(teamIndex, slotIndex) {
 
-    activeTeamSlot = slotElement;
+    currentTeamIndex = teamIndex;
+    currentSlotIndex = slotIndex;
 
     const modal = document.getElementById('operator-modal');
-    const modalList = document.getElementById('modal-operator-list');
     const searchInput = document.getElementById('modal-search');
 
     modal.classList.remove('hidden');
     searchInput.value = '';
-    modalList.innerHTML = '';
 
     renderModalOperators('');
-
     searchInput.focus();
 
     searchInput.oninput = () => {
@@ -267,7 +378,8 @@ function openModal(slotElement) {
 
 function closeModal() {
     document.getElementById('operator-modal').classList.add('hidden');
-    activeTeamSlot = null;
+    currentTeamIndex = null;
+    currentSlotIndex = null;
 }
 
 
@@ -291,8 +403,7 @@ function renderModalOperators(searchValue) {
             item.textContent = operator.name;
 
             item.addEventListener('click', () => {
-                assignOperatorToSlot(operator);
-                closeModal();
+                selectOperator(operator);
             });
 
             modalList.appendChild(item);
@@ -302,26 +413,39 @@ function renderModalOperators(searchValue) {
     });
 }
 
+// =============================================
+// Select Operator From Modal
+// =============================================
+
+function selectOperator(operator) {
+
+    if (currentTeamIndex === null || currentSlotIndex === null) return;
+
+    teams[currentTeamIndex][currentSlotIndex].operator = {
+        name: operator.name,
+        primary: operator.stats[0],
+        secondary: operator.stats[1]
+    };
+
+    saveTeams();
+    closeModal();
+    renderTeams();
+}
 
 // =============================================
-// Assign Operator To Slot
+// Save / Load Teams
 // =============================================
 
-function assignOperatorToSlot(operator) {
+function saveTeams() {
+    localStorage.setItem("operatorTeams", JSON.stringify(teams));
+}
 
-    if (!activeTeamSlot) return;
+function loadTeams() {
+    const saved = localStorage.getItem("operatorTeams");
 
-    activeTeamSlot.innerHTML = `
-        <div>
-            <strong>${operator.name}</strong><br>
-            Primary: ${operator.stats[0]}<br>
-            Secondary: ${operator.stats[1]}
-        </div>
-        <button class="add-operator-btn">Change Operator</button>
-    `;
-
-    const button = activeTeamSlot.querySelector('button');
-    button.addEventListener('click', () => openModal(activeTeamSlot));
+    if (saved) {
+        teams = JSON.parse(saved);
+    }
 }
 
 // =============================================
@@ -388,5 +512,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load any data after DOM exists
     loadVersion();
     loadOperators();
+    loadTeams();
 
 });
