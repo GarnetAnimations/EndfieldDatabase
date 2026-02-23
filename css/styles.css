@@ -130,7 +130,7 @@ h1 {
 /* ============================= */
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 /* ============================= */
@@ -233,11 +233,13 @@ h1 {
 
 .modal-content {
     background-color: #1c2228;
-    width: 400px;
-    max-height: 70vh;
+    width: 420px;
+    max-height: 75vh;
     overflow-y: auto;
+    overflow-x: hidden; /* prevents horizontal scroll */
     padding: 20px;
     border-radius: 8px;
+    box-sizing: border-box; /* THIS is key */
 }
 
 .modal-header {
@@ -260,12 +262,14 @@ h1 {
     margin: 15px 0;
     border-radius: 5px;
     border: none;
+    box-sizing: border-box; /* ALSO important */
 }
 
 .modal-operator {
     padding: 8px;
     border-radius: 5px;
     cursor: pointer;
+    word-wrap: break-word;
 }
 
 .modal-operator:hover {

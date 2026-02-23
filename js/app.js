@@ -248,9 +248,9 @@ function openModal(slotElement) {
 
     searchInput.focus();
 
-    searchInput.addEventListener('input', () => {
+    searchInput.oninput = () => {
         renderModalOperators(searchInput.value.toLowerCase());
-    });
+    };
 }
 
 
