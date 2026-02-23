@@ -3,7 +3,7 @@
 // =============================================
 
 let operatorData = [];      // Stores JSON data
-
+let activeTeamSlot = null; // Tracks which slot we're editing
 
 // =============================================
 // Load JSON Data
@@ -24,6 +24,35 @@ async function loadOperators() {
     }
 }
 
+// =============================================
+// Tab Switching
+// =============================================
+
+const tabButtons = document.querySelectorAll('.tab-button');
+const mainTab = document.getElementById('main-tab');
+const teamsTab = document.getElementById('teams-tab');
+
+tabButtons.forEach(button => {
+
+    button.addEventListener('click', () => {
+
+        // Remove active state
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        const selectedTab = button.dataset.tab;
+
+        if (selectedTab === "main") {
+            mainTab.classList.remove('hidden');
+            teamsTab.classList.add('hidden');
+        } else {
+            mainTab.classList.add('hidden');
+            teamsTab.classList.remove('hidden');
+        }
+
+    });
+
+});
 
 // =============================================
 // Render Alphabet Filter Buttons
@@ -124,6 +153,49 @@ function renderOperators() {
     });
 }
 
+// =============================================
+// Render Teams
+// =============================================
+
+function renderTeams() {
+
+    const container = document.getElementById('teams-container');
+    container.innerHTML = '';
+
+    for (let i = 1; i <= 5; i++) {
+
+        const teamSection = document.createElement('div');
+        teamSection.className = 'team-section';
+
+        const title = document.createElement('h2');
+        title.textContent = `Team ${String(i).padStart(2, '0')}`;
+
+        teamSection.appendChild(title);
+
+        const slotContainer = document.createElement('div');
+        slotContainer.className = 'team-slots';
+
+        for (let s = 1; s <= 4; s++) {
+
+            const slot = document.createElement('div');
+            slot.className = 'team-slot';
+
+            slot.innerHTML = `
+                <div>Empty Slot</div>
+                <button class="add-operator-btn">Add Operator</button>
+            `;
+
+            const button = slot.querySelector('button');
+            button.addEventListener('click', () => openModal(slot));
+
+            slotContainer.appendChild(slot);
+        }
+
+        teamSection.appendChild(slotContainer);
+        container.appendChild(teamSection);
+    }
+}
+
 
 // =============================================
 // Search Listener (Live Filtering)
@@ -157,12 +229,103 @@ function setupSearchListener() {
 }
 
 // =============================================
+// Open Modal
+// =============================================
+
+function openModal(slotElement) {
+
+    activeTeamSlot = slotElement;
+
+    const modal = document.getElementById('operator-modal');
+    const modalList = document.getElementById('modal-operator-list');
+    const searchInput = document.getElementById('modal-search');
+
+    modal.classList.remove('hidden');
+    searchInput.value = '';
+    modalList.innerHTML = '';
+
+    renderModalOperators('');
+
+    searchInput.focus();
+
+    searchInput.addEventListener('input', () => {
+        renderModalOperators(searchInput.value.toLowerCase());
+    });
+}
+
+
+// =============================================
+// Close Modal
+// =============================================
+
+function closeModal() {
+    document.getElementById('operator-modal').classList.add('hidden');
+    activeTeamSlot = null;
+}
+
+
+// =============================================
+// Render Operators Inside Modal
+// =============================================
+
+function renderModalOperators(searchValue) {
+
+    const modalList = document.getElementById('modal-operator-list');
+    modalList.innerHTML = '';
+
+    operatorData.forEach(group => {
+
+        group.operators.forEach(operator => {
+
+            if (!operator.name.toLowerCase().includes(searchValue)) return;
+
+            const item = document.createElement('div');
+            item.className = 'modal-operator';
+            item.textContent = operator.name;
+
+            item.addEventListener('click', () => {
+                assignOperatorToSlot(operator);
+                closeModal();
+            });
+
+            modalList.appendChild(item);
+
+        });
+
+    });
+}
+
+
+// =============================================
+// Assign Operator To Slot
+// =============================================
+
+function assignOperatorToSlot(operator) {
+
+    if (!activeTeamSlot) return;
+
+    activeTeamSlot.innerHTML = `
+        <div>
+            <strong>${operator.name}</strong><br>
+            Primary: ${operator.stats[0]}<br>
+            Secondary: ${operator.stats[1]}
+        </div>
+        <button class="add-operator-btn">Change Operator</button>
+    `;
+
+    const button = activeTeamSlot.querySelector('button');
+    button.addEventListener('click', () => openModal(activeTeamSlot));
+}
+
+// =============================================
 // Initialize App After DOM Loads
 // =============================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
+    // =============================================
     // Back To Top Button Setup
+    // =============================================
     const backToTopButton = document.getElementById('back-to-top');
 
     if (backToTopButton) {
@@ -186,6 +349,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =============================================
+    // Modal Handler
+    // =============================================
+
+    document.getElementById('operator-modal')
+    .addEventListener('click', (e) => {
+        if (e.target.id === 'operator-modal') {
+            closeModal();
+        }
+    });
+
+    // =============================================
     // Load Version From Config
     // =============================================
 
@@ -207,5 +381,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load any data after DOM exists
     loadVersion();
     loadOperators();
+    renderTeams();
 
 });

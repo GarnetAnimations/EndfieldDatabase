@@ -18,31 +18,74 @@
 </div>
 
 <!-- ============================= -->
+<!-- Navigation Tabs -->
+<!-- ============================= -->
+<div class="tabs">
+  <button class="tab-button active" data-tab="main">Main List</button>
+  <button class="tab-button" data-tab="teams">Teams</button>
+</div>
+
+<!-- ============================= -->
 <!-- Search + Alphabet Filters -->
 <!-- ============================= -->
-<div class="controls">
+<div id="main-tab">
 
-  <div class="search-wrapper">
-    <input 
-      type="text" 
-      id="search-input" 
-      placeholder="Search operators..."
-    />
-    <button id="clear-search">×</button>
+    <div id="teams-tab" class="hidden">
+
+  <div id="teams-container"></div>
+
+</div>
+  <div class="controls">
+    <div class="search-wrapper">
+      <input 
+        type="text" 
+        id="search-input" 
+        placeholder="Search operators..."
+      />
+      <button id="clear-search">×</button>
+    </div>
+
+    <div id="alphabet-filter"></div>
   </div>
+  
+<!-- ============================= -->
+<!-- Operator List -->
+<!-- ============================= -->
+  <div id="operator-list"></div>
 
-  <div id="alphabet-filter"></div>
+</div>
+<!-- ============================= -->
+<!-- Back To Top Button -->
+<!-- ============================= -->
+<button id="back-to-top">↑</button>
+
+<!-- ============================= -->
+<!-- Operator Selection Modal -->
+<!-- ============================= -->
+<div id="operator-modal" class="modal hidden">
+
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h3>Select Operator</h3>
+      <button id="close-modal">×</button>
+    </div>
+
+    <input 
+      type="text"
+      id="modal-search"
+      placeholder="Search operator..."
+    />
+
+    <div id="modal-operator-list"></div>
+
+  </div>
 
 </div>
 
 <!-- ============================= -->
-<!-- Operator List -->
+<!-- App -->
 <!-- ============================= -->
-<div id="operator-list"></div>
-
-<!-- Back To Top Button -->
-<button id="back-to-top">↑</button>
-
 <script src="js/app.js"></script>
 
 </body>
