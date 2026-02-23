@@ -227,12 +227,20 @@ function renderTeams() {
 
             } else {
 
+                const primarySkill = slotData.operator.primary
+                    .replace(/[-–]\s*/, '')
+                    .trim();
+
+                const secondarySkill = slotData.operator.secondary
+                    .replace(/[-–]\s*/, '')
+                    .trim();
+
                 slot.innerHTML = `
                     <div class="operator-name">${slotData.operator.name}</div>
                     <div class="operator-info">
-                        Primary: ${slotData.operator.primary}
+                        Primary: ${primarySkill}
                         <br>
-                        Secondary: ${slotData.operator.secondary}
+                        Secondary: ${secondarySkill}
                     </div>
 
                     <div class="equipment-section">
