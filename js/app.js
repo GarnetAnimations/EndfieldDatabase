@@ -451,11 +451,20 @@ function saveTeams() {
 function loadTeams() {
     const saved = localStorage.getItem("operatorTeams");
 
-    if (saved) {
-        teams = JSON.parse(saved);
+    if (!saved) return;
+
+    try {
+        const parsed = JSON.parse(saved);
+
+        // Ensure structure matches expected shape
+        if (Array.isArray(parsed) && parsed.length === TEAM_COUNT) {
+            teams = parsed;
+        }
+
+    } catch (err) {
+        console.error("Failed to load saved teams:", err);
     }
 }
-
 // =============================================
 // Initialize App After DOM Loads
 // =============================================
@@ -519,7 +528,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Load any data after DOM exists
     loadVersion();
-    loadOperators();
     loadTeams();
+    loadOperators();
 
 });
